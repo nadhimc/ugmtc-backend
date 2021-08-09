@@ -5,6 +5,7 @@ const multer = require("multer")
 const { getUsers, postUsers } = require("./src/controllers/users");
 const {body} = require("express-validator");
 const { login } = require("./src/controllers/auth");
+const { postSpeedKick } = require("./src/controllers/speedkick");
 
 const app = express()
 const router = express.Router()
@@ -21,7 +22,8 @@ const fileStorage = multer.diskStorage({
 const fileFilter = (req, file, cb)=>{
     if(
         file.mimetype === "image/jpg"||
-        file.mimetype === "image/jpeg"
+        file.mimetype === "image/jpeg" ||
+        file.mimetype === "image/png" 
     ){
         cb(null,true)
     }else{
@@ -29,7 +31,7 @@ const fileFilter = (req, file, cb)=>{
     }
 }
 
-app.use(multer({storage:fileStorage, fileFilter: fileFilter}).single('image'))
+// app.use(multer({storage:fileStorage, fileFilter: fileFilter}).single('image'))
 
 // Routing
 
@@ -56,8 +58,23 @@ const usersPostValidator = [
 
 router.post('/users', usersPostValidator , postUsers)
 
-// 
+// SPEED KICK
 
+// POST SPEED KICK
+
+const speedKickValidator = [
+     body('nama').not().isEmpty().trim().escape().withMessage("Tidak Boleh Kosong"),
+     body('tgl_lahir').not().isEmpty().trim().escape().withMessage("Tidak Boleh Kosong"),
+     body('jk').not().isEmpty().trim().escape().withMessage("Tidak Boleh Kosong"),
+     body('berat').not().isEmpty().trim().escape().withMessage("Tidak Boleh Kosong"),
+     body('sabuk').not().isEmpty().trim().escape().withMessage("Tidak Boleh Kosong"),
+     body('kelas').not().isEmpty().trim().escape().withMessage("Tidak Boleh Kosong"),
+     body('youtube').not().isEmpty().trim().escape().withMessage("Tidak Boleh Kosong"),
+]
+router.post('/speedkick', multer({storage:fileStorage, fileFilter: fileFilter}).single('foto'),(req,res,next)=>{
+    next()
+})
+router.post('/speedkick', speedKickValidator, postSpeedKick)
 
 
 
