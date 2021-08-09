@@ -4,9 +4,8 @@
     "description": "backend ugmtc",
     "main": "index.js",
     "scripts": {
-        "start": "nodemon index.js",
-        "deploy": "node index.js",
-        "test": "echo \"Test\" && exit 1"
+        "start": "node index.js",
+        "test": "nodemon index.js"
     },
     "author": "Nadhim",
     "license": "MIT",
